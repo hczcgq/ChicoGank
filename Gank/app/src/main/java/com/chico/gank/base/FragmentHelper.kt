@@ -11,28 +11,34 @@ import com.chico.gank.util.ToastUtils
  * @Date: 2020/12/25
  * @Description:
  */
-class FragmentHelper {
+object FragmentHelper {
 
+    @JvmStatic
     fun start(context: Context?, baseFragment: BaseFragment?) {
         start(context, baseFragment, -1)
     }
 
+    @JvmStatic
     fun start(context: Context?, cls: Class<*>?) {
         start(context, cls, null, -1)
     }
 
+    @JvmStatic
     fun start(context: Context?, cls: Class<*>?, bundle: Bundle?) {
         start(context, cls, bundle, -1)
     }
 
+    @JvmStatic
     fun start(context: Context?, baseFragment: BaseFragment?, requestCode: Int) {
         start(context, baseFragment, BaseActivity::class.java, null, requestCode)
     }
 
+    @JvmStatic
     fun start(context: Context?, cls: Class<*>?, bundle: Bundle?, requestCode: Int) {
         start(context, null, cls, bundle, requestCode)
     }
 
+    @JvmStatic
     fun start(
         context: Context?,
         baseFragment: BaseFragment?,

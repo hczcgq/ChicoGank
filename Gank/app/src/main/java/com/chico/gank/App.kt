@@ -12,5 +12,26 @@ class App : Application() {
     companion object {
         //判断是否被回收
         var systemRecycleStatus = -1
+
+        private var instance: App? = null
+
+        fun get(): App? {
+            return instance
+        }
     }
+
+
+    private var lifecycleHandler: LifecycleHandler? = null
+
+    fun getLifecycleHandler(): LifecycleHandler? {
+        return lifecycleHandler
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
+        lifecycleHandler = LifecycleHandler()
+        registerActivityLifecycleCallbacks(lifecycleHandler)
+    }
+
 }

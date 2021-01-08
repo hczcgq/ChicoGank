@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -25,6 +27,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField "String", "URL", "https://gank.io/api/"
         }
     }
     compileOptions {
@@ -47,6 +51,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation("org.jetbrains.anko:anko-design:$anko_version")
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+    implementation("org.jetbrains.anko:anko:$anko_version")
+
     //jetpack
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
@@ -66,11 +77,23 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
 
     //rxjava
-    implementation "io.reactivex.rxjava3:rxjava:3.0.8"
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation 'io.reactivex.rxjava3:rxkotlin:3.0.1'
+    implementation "io.reactivex.rxjava2:rxjava:2.1.12"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation('com.github.bumptech.glide:okhttp3-integration:4.11.0') {
+        exclude group: 'com.squareup.okhttp3'
+    }
+    implementation('jp.wasabeef:glide-transformations:4.1.0') {
+        exclude group: 'com.github.bumptech.glide'
+    }
+
+    //轮播
+    implementation 'com.youth.banner:banner:2.1.0'
+
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
 }

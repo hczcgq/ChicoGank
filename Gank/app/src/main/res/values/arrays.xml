@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="tab_ganhuo">
+        <item>Android</item>
+        <item>苹果</item>
+        <item>Flutter</item>
+        <item>前端</item>
+        <item>APP</item>
+    </array>
+
+    <array name="tab_article">
+        <item>Android</item>
+        <item>苹果</item>
+        <item>Flutter</item>
+        <item>前端</item>
+        <item>后端</item>
+        <item>APP</item>
+    </array>
+</resources>

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Gank</string>
+
+    <string name="splash_count_down">%d 秒后跳过</string>
+    <string name="splash_count_down_init">5 秒后跳过</string>
+
+    <string name="tag_ganhuo">干货</string>
+    <string name="tag_article">文章</string>
+    <string name="tag_girl">妹子</string>
 </resources>

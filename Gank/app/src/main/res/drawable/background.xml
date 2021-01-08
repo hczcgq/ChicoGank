@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 设置整个屏幕背景为白色 -->
+    <item
+        android:drawable="@drawable/white"
+        android:gravity="fill" />
+
+    <!-- 底部图表 -->
+    <item>
+        <bitmap
+            android:gravity="bottom|center"
+
+            android:tileMode="disabled" />
+    </item>
+
+    <item android:bottom="70dp">
+        <bitmap
+            android:gravity="center_horizontal"
+
+            android:tileMode="disabled" />
+    </item>
+
+</layer-list>

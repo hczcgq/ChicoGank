@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.chico.gank.model.Article" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rounder="@{data.cover}" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{data.title}"
+            android:textColor="#333"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_cover"
+            app:layout_constraintTop_toTopOf="@+id/iv_cover" />
+
+        <TextView
+            android:id="@+id/tv_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="@{data.type}"
+            android:textColor="#999"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_cover"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            tools:text="Android" />
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:background="#F5F4F8"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_source"
+            app:layout_constraintStart_toEndOf="@+id/tv_source"
+            app:layout_constraintTop_toTopOf="@+id/tv_source" />
+
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{data.author}"
+            android:textColor="#999"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_source"
+            app:layout_constraintStart_toEndOf="@+id/view_line"
+            app:layout_constraintTop_toTopOf="@+id/tv_source"
+            tools:text="Chico" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{data.createdAt}"
+            android:textColor="#999"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_source"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_source"
+            tools:text="2020-10-11 12:00:00" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

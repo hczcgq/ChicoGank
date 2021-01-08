@@ -1,0 +1,28 @@
+package com.chico.gank.http
+
+import com.chico.gank.model.Article
+import com.chico.gank.model.Banner
+import com.chico.gank.model.Result
+import io.reactivex.Observable
+
+import retrofit2.http.GET
+import retrofit2.http.Path
+
+/**
+ * @Author: Chico
+ * @Date: 2020/12/28
+ * @Description:
+ */
+interface ApiService {
+
+    @GET("api/v2/banners")
+    fun getBanner(): Observable<Result<List<Banner>>>
+
+    @GET("api/v2/hot/views/Article/{page}")
+    fun getHot(@Path("page") page: Int): Observable<Result<List<Article>>>
+
+    @GET("api/v2/data/category/{category}/type/{type}/page/{page}/count/10")
+    fun getArticle(@Path("category") category: String,@Path("type") type: String,@Path("page") page: Int): Observable<Result<List<Article>>>
+
+
+}

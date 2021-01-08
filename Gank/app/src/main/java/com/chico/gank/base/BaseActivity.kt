@@ -3,7 +3,12 @@ package com.chico.gank.base
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
+import android.text.TextUtils
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.chico.gank.App
@@ -11,13 +16,14 @@ import com.chico.gank.R
 import com.chico.gank.SplashActivity
 import com.chico.gank.util.StatusBarUtil
 import com.chico.gank.util.ToastUtils
+import kotlinx.android.synthetic.main.base_toolbar.*
 
 /**
  * @Author: Chico
  * @Date: 2020/12/24
  * @Description:
  */
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity(), ToolBarView {
 
     companion object {
         const val INTENT_FRAGMENT = "Fragment"
@@ -35,8 +41,7 @@ open class BaseActivity : AppCompatActivity() {
             finish()
             return
         }
-
-        setContentView(if (getContentViewId() == -1) R.layout.activity_base else getContentViewId())
+        setContentView(R.layout.activity_base)
         initActivity()
         addFragmentContain()
     }
@@ -115,5 +120,66 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun finish() {
         super.finish()
+    }
+
+    override fun getToolBarTitle(): TextView {
+        return toolbar_title
+    }
+
+    override fun setToolbar(hasToolbar: Boolean) {
+        setToolbar(hasToolbar, null)
+    }
+
+    override fun setToolbar(hasToolbar: Boolean, title: String?) {
+        setToolbar(hasToolbar, title, -1)
+    }
+
+    override fun setToolbar(hasToolbar: Boolean, title: String?, backImg: Int) {
+        setToolbar(hasToolbar, title, backImg, -1)
+    }
+
+    override fun setToolbar(
+        hasToolbar: Boolean,
+        title: String?,
+        backImg: Int,
+        backgroundColor: Int
+    ) {
+        setToolbar(hasToolbar, title, backImg, backgroundColor, -1)
+    }
+
+    override fun setToolbar(
+        hasToolbar: Boolean,
+        title: String?,
+        backImg: Int,
+        backgroundColor: Int,
+        titleColor: Int
+    ) {
+        if (!hasToolbar) {
+            toolbar.visibility = View.GONE
+            return
+        }
+        setSupportActionBar(toolbar)
+        supportActionBar!!.displayOptions = (ActionBar.DISPLAY_HOME_AS_UP
+                or ActionBar.DISPLAY_SHOW_HOME)
+
+        if (backgroundColor != -1) {
+            toolbar.setBackgroundColor(backgroundColor)
+        }
+
+        if (backImg != -1) {
+            toolbar.setNavigationIcon(backImg)
+        } else {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        }
+
+        if (titleColor != -1) {
+            toolbar_title.setTextColor(titleColor)
+        }
+
+        if (TextUtils.isEmpty(title)) {
+            toolbar_title.text = ""
+        } else {
+            toolbar_title.text = Html.fromHtml(title)
+        }
     }
 }
