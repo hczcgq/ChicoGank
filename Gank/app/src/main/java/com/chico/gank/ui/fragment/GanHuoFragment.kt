@@ -34,6 +34,13 @@ class GanHuoFragment : BaseFragment() {
 
     override fun initFragment() {
         toolbar_title.text = "干货"
+        toolbar.inflateMenu(R.menu.menu_search)
+        toolbar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.menu_search) {
+                start(SearchFragment.instance(CATEGORY_GAN_HUO))
+            }
+            false
+        }
         titles = resources.getStringArray(R.array.tab_ganhuo)
 
         fragments.add(CategoryFragment.instance(CATEGORY_GAN_HUO, GAN_HUO_ANDROID))

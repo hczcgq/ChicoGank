@@ -34,6 +34,14 @@ class ArticleFragment : BaseFragment() {
 
     override fun initFragment() {
         toolbar_title.text = "文章"
+        toolbar.inflateMenu(R.menu.menu_search)
+        toolbar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.menu_search) {
+                start(SearchFragment.instance(CATEGORY_ARTICLE))
+            }
+            false
+        }
+
         titles = resources.getStringArray(R.array.tab_article)
 
         fragments.add(CategoryFragment.instance(CATEGORY_ARTICLE, ARTICLE_ANDROID))

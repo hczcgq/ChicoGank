@@ -73,7 +73,7 @@ open class BaseActivity : AppCompatActivity(), ToolBarView {
             ft.commitAllowingStateLoss()
             baseFragment.userVisibleHint = true
             baseFragment.setMenuVisibility(true)
-            StatusBarUtil.setColor(this, resources.getColor(R.color.purple_500), 1)
+            StatusBarUtil.setColor(this, resources.getColor(R.color.toolbar), 1)
             StatusBarUtil.setLightMode(this)
         } catch (e: Exception) {
             ToastUtils.showShortToast(this, e.message)

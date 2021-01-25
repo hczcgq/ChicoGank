@@ -1,2 +1,3 @@
+include ':ShowImageLib'
 include ':app'
 rootProject.name = "Gank"

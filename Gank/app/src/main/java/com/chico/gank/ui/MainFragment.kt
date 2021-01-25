@@ -1,7 +1,14 @@
 package com.chico.gank.ui
 
+import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.createDataStore
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import com.chico.gank.R
 import com.chico.gank.base.BaseViewModelFragment
 import com.chico.gank.http.GankViewModel
@@ -9,9 +16,16 @@ import com.chico.gank.model.TabItem
 import com.chico.gank.ui.fragment.ArticleFragment
 import com.chico.gank.ui.fragment.GanHuoFragment
 import com.chico.gank.ui.fragment.GirlFragment
+import com.chico.gank.ui.fragment.MineFragment
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.main_tabs_widght.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.logging.Logger
 
 /**
  * @Author: Chico
@@ -22,12 +36,14 @@ import kotlinx.android.synthetic.main.main_tabs_widght.view.*
 const val TAB_GAN_HUO = 0
 const val TAB_ARTICLE = 1
 const val TAB_GIRL = 2
+const val TAB_MINE = 3
 
 class MainFragment : BaseViewModelFragment<GankViewModel>() {
 
     private var ganHuoFragment: GanHuoFragment? = null
     private var articleFragment: ArticleFragment? = null
     private var girlFragment: GirlFragment? = null
+    private var mineFragment: MineFragment? = null
 
     val tabs = arrayListOf<TabItem>()
     var tabIndex: Int = 0
@@ -75,6 +91,15 @@ class MainFragment : BaseViewModelFragment<GankViewModel>() {
                 R.drawable.tab_info_h,
                 R.drawable.tab_info_n,
                 TAB_GIRL
+            )
+        )
+        tabs.add(
+            TabItem(
+                getString(R.string.tag_mine),
+                tabTextColor,
+                R.drawable.tab_info_h,
+                R.drawable.tab_info_n,
+                TAB_MINE
             )
         )
         for (index in tabs.indices) {
@@ -128,6 +153,10 @@ class MainFragment : BaseViewModelFragment<GankViewModel>() {
                     customView.title.text = getString(R.string.tag_girl)
                     customView.image.setImageResource(R.drawable.tab_info_n)
                 }
+                TAB_MINE -> {
+                    customView.title.text = getString(R.string.tag_mine)
+                    customView.image.setImageResource(R.drawable.tab_info_n)
+                }
             }
         }
     }
@@ -156,6 +185,12 @@ class MainFragment : BaseViewModelFragment<GankViewModel>() {
             } else {
                 ft.show(girlFragment!!)
             }
+            TAB_MINE -> if (mineFragment == null) {
+                mineFragment = MineFragment()
+                ft.add(R.id.fragment_content, mineFragment!!, MineFragment::class.java.name)
+            } else {
+                ft.show(mineFragment!!)
+            }
         }
         ft.commitAllowingStateLoss()
     }
@@ -167,5 +202,7 @@ class MainFragment : BaseViewModelFragment<GankViewModel>() {
         if (articleFragment != null) ft.hide(articleFragment!!)
 
         if (girlFragment != null) ft.hide(girlFragment!!)
+
+        if (mineFragment != null) ft.hide(mineFragment!!)
     }
 }

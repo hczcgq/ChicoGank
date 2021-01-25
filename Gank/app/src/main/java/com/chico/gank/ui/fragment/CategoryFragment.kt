@@ -56,10 +56,12 @@ class CategoryFragment : BaseViewModelFragment<GankViewModel>() {
             viewmodel?.getArticle(category, type, page)
         }
 
+        showLoading()
         viewmodel?.getArticle(category, type, page)
 
         viewmodel?.article?.observe(this, Observer {
             setArticleAdapter(it)
+            dismissLoading()
         })
     }
 
@@ -80,9 +82,9 @@ class CategoryFragment : BaseViewModelFragment<GankViewModel>() {
         if (page == 1) {
             swipe_layout.isRefreshing = false
         } else {
-            if(data.isEmpty()){
+            if (data.isEmpty()) {
                 adapter?.loadMoreEnd()
-            }else {
+            } else {
                 adapter?.loadMoreComplete()
             }
         }

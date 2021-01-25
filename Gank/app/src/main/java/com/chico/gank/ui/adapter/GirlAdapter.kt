@@ -3,6 +3,7 @@ package com.chico.gank.ui.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import cc.shinichi.library.ImagePreview
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chico.gank.R
@@ -20,6 +21,18 @@ class GirlAdapter(data: List<Article>) :
     override fun convert(helper: ViewHolder, item: Article?) {
         val binding = helper.binding
         binding.data = item
+        helper.itemView.setOnClickListener {
+            val image = arrayListOf<String>()
+            data.forEach {
+                image.add(it.url)
+            }
+            ImagePreview.getInstance()
+                .setContext(mContext)
+                .setIndex(helper.adapterPosition)
+                .setImageList(image)
+                .setShowDownButton(true)
+                .start()
+        }
         binding.executePendingBindings()
     }
 

@@ -6,6 +6,7 @@ package com.chico.gank.util
  * @Description:
  */
 
+const val CATEGORY_ALL = "All"
 const val CATEGORY_GAN_HUO = "GanHuo"
 const val CATEGORY_ARTICLE = "Article"
 const val CATEGORY_GIRL = "Girl"

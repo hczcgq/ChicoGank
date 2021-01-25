@@ -2,13 +2,15 @@ package com.chico.gank.ui.fragment
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.chico.gank.R
 import com.chico.gank.base.BaseViewModelFragment
 import com.chico.gank.http.GankViewModel
 import com.chico.gank.model.Article
-import com.chico.gank.ui.adapter.ArticleAdapter
 import com.chico.gank.ui.adapter.GirlAdapter
+import com.chico.gank.util.CATEGORY_GIRL
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_catalog.*
 
@@ -41,16 +43,23 @@ class GirlFragment : BaseViewModelFragment<GankViewModel>() {
     override fun initFragment() {
         super.initFragment()
         toolbar_title.text = "妹子"
-
+        toolbar.inflateMenu(R.menu.menu_search)
+        toolbar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.menu_search) {
+                start(SearchFragment.instance(CATEGORY_GIRL))
+            }
+            false
+        }
         swipe_layout.setOnRefreshListener {
             page = 1
             viewmodel?.getArticle(category, type, page)
         }
 
+        showLoading()
         viewmodel?.getArticle(category, type, page)
-
         viewmodel?.article?.observe(this, Observer {
             setArticleAdapter(it)
+            dismissLoading()
         })
     }
 
@@ -59,7 +68,9 @@ class GirlFragment : BaseViewModelFragment<GankViewModel>() {
         if (adapter == null) {
             adapter = GirlAdapter(data)
             recycler_view.adapter = adapter
-            recycler_view.layoutManager = LinearLayoutManager(activity)
+            val manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            recycler_view.layoutManager = manager
+            recycler_view.itemAnimator = DefaultItemAnimator()
         } else {
             if (page == 1) {
                 adapter?.setNewData(data)
@@ -71,9 +82,9 @@ class GirlFragment : BaseViewModelFragment<GankViewModel>() {
         if (page == 1) {
             swipe_layout.isRefreshing = false
         } else {
-            if(data.isEmpty()){
+            if (data.isEmpty()) {
                 adapter?.loadMoreEnd()
-            }else {
+            } else {
                 adapter?.loadMoreComplete()
             }
         }

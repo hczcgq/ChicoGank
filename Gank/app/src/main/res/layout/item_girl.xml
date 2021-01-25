@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,21 +8,38 @@
             type="com.chico.gank.model.Article" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rl_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/white"
-        android:padding="8dp">
+        android:layout_height="240dp"
+        android:paddingStart="3dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="3dp">
 
         <ImageView
-            android:id="@+id/iv_cover"
+            android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:rounder="@{data.url}" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:image="@{data.url}" />
+
+        <TextView
+            android:id="@+id/tvShowTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="bottom"
+            android:background="#a3181818"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:lineSpacingExtra="3dp"
+            android:maxLines="2"
+            android:padding="8dp"
+            android:text="@{data.desc}"
+            android:textColor="#FFF"
+            android:textSize="12sp"
+            tools:text="ddddddddddddddddddddd" />
+    </RelativeLayout>
 </layout>

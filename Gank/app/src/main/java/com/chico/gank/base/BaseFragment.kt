@@ -7,7 +7,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.chico.gank.R
+import com.chico.gank.ui.dialog.LoadingDialog
 import com.chico.gank.util.ToastUtils
+
 
 /**
  * @Author: Chico
@@ -22,6 +24,8 @@ abstract class BaseFragment : Fragment(), FragmentHelperView, ToolBarView,
 
     //Fragment对用户可见的标记
     var isUIVisible = false
+
+    private var loadingDialog: LoadingDialog? = null
 
     override fun start(baseFragment: BaseFragment?) {
         start(baseFragment, -1)
@@ -221,5 +225,18 @@ abstract class BaseFragment : Fragment(), FragmentHelperView, ToolBarView,
 
     open fun showToast(message: String?) {
         ToastUtils.showShortToast(activity, message)
+    }
+
+    protected open fun showLoading() {
+        if (loadingDialog == null) {
+            loadingDialog = LoadingDialog(activity)
+        }
+        loadingDialog?.show(activity)
+    }
+
+    protected open fun dismissLoading() {
+        if (loadingDialog != null) {
+            loadingDialog?.dismiss()
+        }
     }
 }

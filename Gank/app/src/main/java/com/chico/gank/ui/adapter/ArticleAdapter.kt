@@ -6,19 +6,25 @@ import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chico.gank.R
+import com.chico.gank.base.FragmentHelper
 import com.chico.gank.databinding.ItemArticleBinding
 import com.chico.gank.model.Article
+import com.chico.gank.ui.fragment.ArticleDetailFragment
 
 /**
  * @Author: Chico
  * @Date: 2021/1/4
  * @Description:
  */
-class ArticleAdapter(data: List<Article>) : BaseQuickAdapter<Article, ArticleAdapter.ViewHolder>(R.layout.item_article, data) {
+class ArticleAdapter(data: List<Article>) :
+    BaseQuickAdapter<Article, ArticleAdapter.ViewHolder>(R.layout.item_article, data) {
 
     override fun convert(helper: ViewHolder, item: Article?) {
         val binding = helper.binding
         binding.data = item
+        helper.itemView.setOnClickListener {
+            FragmentHelper.start(mContext, ArticleDetailFragment.instance(item!!._id))
+        }
         binding.executePendingBindings()
     }
 
