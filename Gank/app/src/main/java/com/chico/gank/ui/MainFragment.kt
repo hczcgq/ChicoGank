@@ -1,18 +1,13 @@
 package com.chico.gank.ui
 
-import android.util.Log
+import android.Manifest
 import androidx.core.content.ContextCompat
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.createDataStore
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.lifecycleScope
 import com.chico.gank.R
 import com.chico.gank.base.BaseViewModelFragment
 import com.chico.gank.http.GankViewModel
 import com.chico.gank.model.TabItem
+import com.chico.gank.ui.dialog.PermissionDialog
 import com.chico.gank.ui.fragment.ArticleFragment
 import com.chico.gank.ui.fragment.GanHuoFragment
 import com.chico.gank.ui.fragment.GirlFragment
@@ -20,12 +15,9 @@ import com.chico.gank.ui.fragment.MineFragment
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.main_tabs_widght.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.util.logging.Logger
+import pl.tajchert.nammu.Nammu.askForPermission
+import pl.tajchert.nammu.Nammu.hasPermission
+import pl.tajchert.nammu.PermissionCallback
 
 /**
  * @Author: Chico
@@ -60,7 +52,26 @@ class MainFragment : BaseViewModelFragment<GankViewModel>() {
     override fun initFragment() {
         super.initFragment()
         setToolbar(false)
+        checkPermission()
         initTab()
+    }
+
+    private fun checkPermission() {
+        val permissions =
+            arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (!hasPermission(activity, permissions)) {
+            askForPermission(requireActivity(), permissions, object : PermissionCallback {
+                override fun permissionGranted() {
+                    viewmodel?.requestLocationInfo()
+                }
+
+                override fun permissionRefused() {
+                    PermissionDialog.instance("为了正常使用该应用，需要申请相关权限").show(childFragmentManager, null)
+                }
+            })
+        }else{
+            viewmodel?.requestLocationInfo()
+        }
     }
 
     private fun initTab() {

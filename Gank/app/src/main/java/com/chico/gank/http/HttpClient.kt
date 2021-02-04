@@ -45,6 +45,15 @@ class HttpClient {
             .build()
     }
 
+    fun retrofit(url: String): Retrofit? {
+        return Retrofit.Builder()
+            .baseUrl(url)
+            .client(getOkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create(getGson()))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+    }
+
     /*OkHttp实例化*/
     private fun getOkHttpClient(): OkHttpClient? {
         if (okHttp == null) {

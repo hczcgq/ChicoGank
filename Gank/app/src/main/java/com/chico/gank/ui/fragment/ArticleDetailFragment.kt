@@ -1,16 +1,25 @@
 package com.chico.gank.ui.fragment
 
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.chico.gank.R
 import com.chico.gank.base.BaseViewModelFragment
 import com.chico.gank.http.GankViewModel
 import com.chico.gank.model.ArticleDetail
+import com.chico.gank.model.favorite.Favorite
+import com.chico.gank.model.favorite.FavoriteDatabase
 import com.zzhoujay.richtext.RichText
 import kotlinx.android.synthetic.main.fragment_article_detail.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.jetbrains.anko.db.INTEGER
 
 
 /**
@@ -22,6 +31,9 @@ class ArticleDetailFragment : BaseViewModelFragment<GankViewModel>() {
 
     private var postId: String? = null
     private var detail: ArticleDetail? = null
+
+    private var favoriteMenu: MenuItem? = null
+    private var isFavorite: Boolean = false
 
     companion object {
         const val ID = "id"
@@ -59,6 +71,29 @@ class ArticleDetailFragment : BaseViewModelFragment<GankViewModel>() {
             RichText.fromMarkdown(it?.markdown).into(tv_content)
             dismissLoading()
         })
+
+        viewmodel?.favoriteStatus?.observe(this, Observer { exit ->
+            if (exit != null) {
+                isFavorite = exit
+                favoriteMenu?.let {
+                    it.setIcon(if (exit) R.drawable.icon_favorited else R.drawable.icon_favorite)
+                }
+            } else {
+                showToast("操作异常")
+            }
+        })
+
+        viewmodel?.favoriteDeal?.observe(this, Observer { status ->
+            if (status != null) {
+                favoriteMenu?.let {
+                    isFavorite = status
+                    it.setIcon(if (status) R.drawable.icon_favorited else R.drawable.icon_favorite)
+                    showToast(if (status) "收藏成功" else "取消收藏")
+                }
+            } else {
+                showToast("操作异常")
+            }
+        })
     }
 
     override fun hasMenu(): Boolean {
@@ -67,6 +102,12 @@ class ArticleDetailFragment : BaseViewModelFragment<GankViewModel>() {
 
     override fun getMenuId(): Int {
         return R.menu.menu_article
+    }
+
+    override fun menuSet(menu: Menu) {
+        super.menuSet(menu)
+        favoriteMenu = menu.findItem(R.id.menu_favorite)
+        viewmodel?.checkIsFavorite(requireActivity(), postId ?: "")
     }
 
     override fun menuClick(id: Int) {
@@ -79,6 +120,24 @@ class ArticleDetailFragment : BaseViewModelFragment<GankViewModel>() {
                 intent.putExtra(Intent.EXTRA_TEXT, shareContent)
                 activity?.startActivity(intent)
             }
+            R.id.menu_favorite -> {
+                detail?.let {
+                    val image =
+                        if (it.images != null && it.images!!.isNotEmpty()) it.images!![0] else ""
+                    val favorite =
+                        Favorite(it._id, it.author, image, it.title, it.type, it.publishedAt)
+                    viewmodel?.insertFavorite(requireActivity(), favorite)
+                }
+            }
         }
+    }
+
+    override fun onBackPressed(): Boolean {
+        if (!isFavorite) {
+            val intent = Intent()
+            intent.putExtra("id", id)
+            requireActivity().setResult(Activity.RESULT_OK, intent)
+        }
+        return super.onBackPressed()
     }
 }

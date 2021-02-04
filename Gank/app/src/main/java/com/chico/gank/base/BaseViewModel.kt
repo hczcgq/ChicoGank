@@ -42,6 +42,10 @@ open class BaseViewModel : ObservableViewModel() {
         return HttpClient().get()?.retrofit()?.create(cls)!!
     }
 
+    protected fun <T> create(cls: Class<T>?, url: String): T {
+        return HttpClient().get()?.retrofit(url)?.create(cls)!!
+    }
+
     /*map转换成json*/
     protected fun toJson(map: HashMap<String, Any>?): String {
         return Gson().toJson(map)

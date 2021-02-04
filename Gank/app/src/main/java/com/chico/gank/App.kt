@@ -1,6 +1,10 @@
 package com.chico.gank
 
 import android.app.Application
+import androidx.room.Room
+import com.chico.gank.model.CityInfo
+import com.chico.gank.model.favorite.FavoriteDatabase
+import pl.tajchert.nammu.Nammu.init
 
 /**
  * @Author: Chico
@@ -32,6 +36,9 @@ class App : Application() {
         instance = this
         lifecycleHandler = LifecycleHandler()
         registerActivityLifecycleCallbacks(lifecycleHandler)
+        //权限管理初始化
+        init(this)
     }
 
+    var cityInfo: CityInfo? = null
 }

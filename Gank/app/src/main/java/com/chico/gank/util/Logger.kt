@@ -11,7 +11,7 @@ import com.chico.gank.BuildConfig
  * @Date: 2020/3/20 10:28
  */
 object Logger {
-    private const val TAG = "Leisu"
+    private const val TAG = "GANK"
 
     @JvmStatic
     fun v(str: String?) {

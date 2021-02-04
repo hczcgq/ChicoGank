@@ -5,11 +5,14 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import cc.shinichi.library.ImagePreview
 import com.chico.gank.R
 import com.chico.gank.base.BaseViewModelFragment
 import com.chico.gank.http.GankViewModel
 import com.chico.gank.model.Article
 import com.chico.gank.ui.adapter.GirlAdapter
+import com.chico.gank.ui.dialog.CleanCacheDialog
+import com.chico.gank.ui.dialog.ImageSheetDialog
 import com.chico.gank.util.CATEGORY_GIRL
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_catalog.*
@@ -43,13 +46,6 @@ class GirlFragment : BaseViewModelFragment<GankViewModel>() {
     override fun initFragment() {
         super.initFragment()
         toolbar_title.text = "妹子"
-        toolbar.inflateMenu(R.menu.menu_search)
-        toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.menu_search) {
-                start(SearchFragment.instance(CATEGORY_GIRL))
-            }
-            false
-        }
         swipe_layout.setOnRefreshListener {
             page = 1
             viewmodel?.getArticle(category, type, page)
@@ -71,6 +67,22 @@ class GirlFragment : BaseViewModelFragment<GankViewModel>() {
             val manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             recycler_view.layoutManager = manager
             recycler_view.itemAnimator = DefaultItemAnimator()
+            adapter!!.setOnItemClickListener { adapter, view, position ->
+                val image = arrayListOf<String>()
+                data.forEach {
+                    image.add(it.url)
+                }
+                ImagePreview.getInstance()
+                    .setContext(requireActivity())
+                    .setIndex(position)
+                    .setImageList(image)
+                    .setShowDownButton(true)
+                    .setBigImageLongClickListener { activity, view, position ->
+                        ImageSheetDialog.instance(image[position]).show(childFragmentManager, null)
+                        false
+                    }
+                    .start()
+            }
         } else {
             if (page == 1) {
                 adapter?.setNewData(data)

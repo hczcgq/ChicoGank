@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.chico.gank.R
 import com.chico.gank.ui.dialog.LoadingDialog
 import com.chico.gank.util.ToastUtils
+import pl.tajchert.nammu.Nammu
 
 
 /**
@@ -238,5 +239,14 @@ abstract class BaseFragment : Fragment(), FragmentHelperView, ToolBarView,
         if (loadingDialog != null) {
             loadingDialog?.dismiss()
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Nammu.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

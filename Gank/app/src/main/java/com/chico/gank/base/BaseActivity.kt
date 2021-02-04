@@ -182,4 +182,13 @@ open class BaseActivity : AppCompatActivity(), ToolBarView {
             toolbar_title.text = Html.fromHtml(title)
         }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        resultFragment!!.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 }
