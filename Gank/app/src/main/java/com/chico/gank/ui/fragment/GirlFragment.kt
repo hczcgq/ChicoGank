@@ -78,7 +78,7 @@ class GirlFragment : BaseViewModelFragment<GankViewModel>() {
                     .setImageList(image)
                     .setShowDownButton(true)
                     .setBigImageLongClickListener { activity, view, position ->
-                        ImageSheetDialog.instance(image[position]).show(childFragmentManager, null)
+//                        ImageSheetDialog.instance(image[position]).show(childFragmentManager, null)
                         false
                     }
                     .start()

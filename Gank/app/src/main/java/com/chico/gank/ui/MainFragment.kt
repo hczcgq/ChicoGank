@@ -58,7 +58,7 @@ class MainFragment : BaseViewModelFragment<GankViewModel>() {
 
     private fun checkPermission() {
         val permissions =
-            arrayOf(Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION)
+            arrayOf(Manifest.permission.READ_PHONE_STATE)
         if (!hasPermission(activity, permissions)) {
             askForPermission(requireActivity(), permissions, object : PermissionCallback {
                 override fun permissionGranted() {
